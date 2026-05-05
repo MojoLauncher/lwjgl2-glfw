@@ -45,6 +45,11 @@ list(APPEND LWJGL_SRC ${GENERATED_AL_SRC} ${GENERATED_GL_SRC} ${GENERATED_CL_SRC
 add_library(${LIBNAME} SHARED ${LWJGL_SRC})
 
 target_include_directories(${LIBNAME} PRIVATE ${JNI_INCLUDE_DIRS} ${NATIVE}/common ${NATIVE}/common/opengl ${NATIVE}/${PLATFORM})
+if(PLATFORM STREQUAL "macosx")
+   target_link_libraries(${LIBNAME} glfw m Threads::Threads "-framework CoreFoundation" ${JAVA_AWT_LIBRARY})
+else ()
+   target_link_libraries(${LIBNAME} glfw m Threads::Threads)
+endif ()
 target_link_libraries(${LIBNAME} glfw m Threads::Threads)
 target_compile_options(${LIBNAME} PRIVATE -O2 -Wall)
 set_property(TARGET ${LIBNAME} PROPERTY C_STANDARD 99)
