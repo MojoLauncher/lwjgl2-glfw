@@ -41,9 +41,12 @@ public class GLFWDisplay implements DisplayImplementation {
             Class infdevMouse = Class.forName("org.lwjgl.input.InfdevMouse");
             Constructor constructor = infdevMouse.getConstructor();
             grabListener = (EmptyCursorGrabListener) constructor.newInstance();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        } catch (NoClassDefFoundError ignored) {
+	  // Cacio17 doesn't have this hack
+	} catch (Exception e) {
+	    System.out.printf("Unable to setup Infdev mouse handler: %s\n", e.getMessage());
+	    e.printStackTrace();
+	  }
     }
 
     public void createWindow(DrawableLWJGL drawable, DisplayMode mode, Canvas parent, int x, int y) throws LWJGLException {
